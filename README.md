@@ -18,54 +18,64 @@ For OpenWebUI, follow the [official documentation](https://docs.openwebui.com/ge
 
 ### 2. Docker Compose Configuration
 
-Create a `docker-compose.yml` file with the following content:
+Create two folders. Name one `ollama` and name the other `openwebui`. 
+
+### 3. In the `ollama` folder, create a file named  `docker-compose.yml` file with the following content:
 
 ```yaml
 services:
-  openwebui:
-    image: ghcr.io/open-webui/open-webui:main
-    restart: always
-    ports:
-      - "3000:8080"
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    volumes:
-      - open-webui-local:/app/backend/data
-
   ollama:
-    image: ollama/ollama:0.1.34
+    image: ollama/ollama:latest
+    container_name: ollama
     ports:
       - "11434:11434"
     volumes:
-      - ollama-local:/root/.ollama
+      - ollama:/root/.ollama
+    restart: unless-stopped
 
 volumes:
-  ollama-local:
-    external: true
-  open-webui-local:
-    external: true
+  ollama:
+```
+### 4. In the `openwebui` folder, create a file named  `docker-compose.yml` file with the following content:
+
+```yaml
+services:
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    ports:
+      - "3000:8080"
+    volumes:
+      - open-webui:/app/backend/data
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: always
+
+volumes:
+  open-webui:
 ```
 
-Replace the placeholder values with your specific configurations.
-
-### 3. Create Docker Volumes
-
-Run the following commands to create the necessary Docker volumes:
-
+You will have two folders with two different `docker-compose.yaml` files:
 ```bash
-docker volume create ollama-local
-docker volume create open-webui-local
+├── ollama
+│   ├── docker-compose.yaml
+├── openwebui
+│   ├── docker-compose.yaml
 ```
 
-### 4. Deploy the Containers
+### 5. Deploy the Containers
 
-Deploy both Ollama and Open-WebUI using Docker Compose:
+Deploy both the Ollama `/ollama` and Open-WebUI `/openwebui` using Docker Compose:
 
 ```bash
+cd ollama
+docker-compose up -d
+cd ..
+cd openwebui
 docker-compose up -d
 ```
 
-### 5. Access Open-WebUI
+### 6. Access Open-WebUI
 
 Once the containers are up and running, you can access Open-WebUI in your web browser using the specified port (e.g., [http://localhost:3000](http://localhost:3000)). If you access Open-WebUI for the first time, sign up to get started.
 
