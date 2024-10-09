@@ -2,6 +2,8 @@
 
 This guide will walk you through deploying Ollama and Open-WebUI using Docker Compose. Whether you’re writing poetry, generating stories, or experimenting with creative content, this setup will help you get started with a locally running AI!!
 
+Details on Ollama can also be found via their GitHub Repository here: [Ollama](https://github.com/ollama/ollama/)
+
 ## Prerequisites
 
 Ensure that you have the following prerequisites:
