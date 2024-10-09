@@ -21,8 +21,6 @@ For OpenWebUI, follow the [official documentation](https://docs.openwebui.com/ge
 Create a `docker-compose.yml` file with the following content:
 
 ```yaml
-version: '3.8'
-
 services:
   openwebui:
     image: ghcr.io/open-webui/open-webui:main
