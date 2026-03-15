@@ -98,7 +98,7 @@ ollama run gemma2:2b
 
 Running on an AMD RX 6700 XT? The standard setup above won't use your GPU since the RX 6700 XT isn't officially supported by ROCm out of the box. There are dedicated guides in `/rx-6700xt/ollama/` that walk through the full setup including the GFX override needed to get it working:
 
-- [Debian](/rx-6700xt/ollama/README.md)
+- [Debian](/rx-6700xt/ollama/README-debian.md)
 - [Ubuntu](/rx-6700xt/ollama/README-ubuntu.md)
 - [Fedora](/rx-6700xt/ollama/README-fedora.md)
 
