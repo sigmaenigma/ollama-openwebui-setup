@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Allocates VRAM on and off
+
 CONTAINER_NAME="ollama-rx6700xt"
 COMPOSE_DIR="$HOME/docker/ollama-rocm"
 PORT="11434"
