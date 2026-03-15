@@ -1,28 +1,26 @@
-# Installing Ollama and Open-WebUI with Docker Compose
+# Ollama + Open-WebUI with Docker Compose
 
-This guide will walk you through deploying Ollama and Open-WebUI using Docker Compose. Whether you’re writing poetry, generating stories, or experimenting with creative content, this setup will help you get started with a locally running AI!!
+This is my personal setup for running Ollama and Open-WebUI locally using Docker Compose. I use this for experimenting with local LLMs — writing, coding, general tinkering.
 
-Details on Ollama can also be found via their GitHub Repository here: [Ollama](https://github.com/ollama/ollama/)
+More details on Ollama can be found on their [GitHub](https://github.com/ollama/ollama/).
+
+---
 
 ## Prerequisites
 
-Ensure that you have the following prerequisites:
+- Docker and Docker Compose installed on your system
 
-- Docker and Docker Compose installed on your system.
+---
 
-## Installation Steps
+## Setup
 
-### 1. Install Ollama and Open-WebUI
+### 1. Create the folders
 
-You can install Ollama directly using this [link](https://ollama.com/download) for Windows, MacOS, or Linux.
+```bash
+mkdir ollama openwebui
+```
 
-For OpenWebUI, follow the [official documentation](https://docs.openwebui.com/getting-started/).
-
-### 2. Docker Compose Configuration
-
-Create two folders. Name one `ollama` and name the other `openwebui`. 
-
-### 3. In the `ollama` folder, create a file named  `docker-compose.yml` file with the following content:
+### 2. Ollama — `ollama/docker-compose.yml`
 
 ```yaml
 services:
@@ -34,11 +32,11 @@ services:
     volumes:
       - ollama:/root/.ollama
     restart: unless-stopped
-
 volumes:
   ollama:
 ```
-### 4. In the `openwebui` folder, create a file named  `docker-compose.yml` file with the following content:
+
+### 3. Open-WebUI — `openwebui/docker-compose.yml`
 
 ```yaml
 services:
@@ -52,65 +50,60 @@ services:
     extra_hosts:
       - "host.docker.internal:host-gateway"
     restart: always
-
 volumes:
   open-webui:
 ```
 
-You will have two folders with two different `docker-compose.yaml` files:
-```bash
+Your folder structure should look like this:
+
+```
 ├── ollama
-│   ├── docker-compose.yaml
-├── openwebui
-│   ├── docker-compose.yaml
+│   └── docker-compose.yml
+└── openwebui
+    └── docker-compose.yml
 ```
 
-### 5. Deploy the Containers
-
-Deploy both the Ollama `/ollama` and Open-WebUI `/openwebui` using Docker Compose:
+### 4. Start the containers
 
 ```bash
-cd ollama
-docker-compose up -d
-cd ..
-cd openwebui
-docker-compose up -d
+cd ollama && docker compose up -d
+cd ../openwebui && docker compose up -d
 ```
 
-### 6. Access Open-WebUI
+### 5. Open the UI
 
-Once the containers are up and running, you can access Open-WebUI in your web browser using the specified port (e.g., [http://localhost:3000](http://localhost:3000)). If you access Open-WebUI for the first time, sign up to get started.
+Go to [http://localhost:3000](http://localhost:3000) and sign up on first launch.
 
-## Downloading Additional Models
+---
 
-To enhance your AI capabilities, you can download various models that focus on different features, such as code generation, storytelling, and more. Here are the steps to download and use additional models with Ollama:
+## Downloading Models
 
-### 1. Explore Available Models
-
-Visit the [Ollama Models](https://ollama.com/search) page to explore the available models. You can find models tailored for different tasks, such as code generation, natural language processing, and more.
-
-### 2. Download a Model
-
-Use the Ollama command-line interface (CLI) to download the desired model. For example, to download a model named `gemma2:2b`, use the following command:
+Browse available models at [ollama.com/search](https://ollama.com/search). To pull one:
 
 ```bash
 ollama pull gemma2:2b
 ```
 
-Note that for some models, you can actually specify the size (e.g. 2b, 7b, 27b means BILLIONS of parameters!)
+Model sizes are listed in billions of parameters — `2b`, `7b`, `27b` etc. Bigger = smarter but slower and more memory hungry. Start small if you're unsure.
 
-### 3. Configure the Model
-
-After downloading the model, you may need to configure it by creating a model file that specifies the model's parameters, system prompt, and template. Refer to the [Ollama documentation](https://ollama.com/docs) for detailed instructions on configuring models.
-
-### 4. Run the Model
-
-Once the model is configured, you can run it using the Ollama CLI or integrate it into your applications using the Ollama API. For example, to run the `gemma2:2b` model, use the following command:
+To run a model directly from the CLI:
 
 ```bash
 ollama run gemma2:2b
 ```
 
+---
+
+## AMD RX 6700 XT Setup
+
+Running on an AMD RX 6700 XT? The standard setup above won't use your GPU since the RX 6700 XT isn't officially supported by ROCm out of the box. There are dedicated guides in `/rx-6700xt/ollama/` that walk through the full setup including the GFX override needed to get it working:
+
+- [Debian](/rx-6700xt/ollama/README.md)
+- [Ubuntu](/rx-6700xt/ollama/README-ubuntu.md)
+- [Fedora](/rx-6700xt/ollama/README-fedora.md)
+
+---
+
 ## Customization
 
-Feel free to customize the installation according to your server’s specifications and preferences. If you encounter any issues, refer to the official Docker and NVIDIA documentation for troubleshooting tips.
+The compose files above are barebones and meant as a starting point. Check the [Ollama docs](https://github.com/ollama/ollama/blob/main/docs) and [Open-WebUI docs](https://docs.openwebui.com) for configuration options.
