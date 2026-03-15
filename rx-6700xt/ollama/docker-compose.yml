@@ -1,0 +1,21 @@
+services:
+  ollama-rx6700xt:
+    image: ollama/ollama:rocm
+    container_name: ollama-rx6700xt
+    restart: unless-stopped
+    devices:
+      - /dev/kfd:/dev/kfd
+      - /dev/dri:/dev/dri
+    environment:
+      - HSA_OVERRIDE_GFX_VERSION=10.3.0
+      - OLLAMA_HOST=0.0.0.0:11434
+    ports:
+      - 11434:11434
+    volumes:
+      - ollama_data:/root/.ollama
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  ollama_data:
+    external: true
